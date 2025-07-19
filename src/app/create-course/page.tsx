@@ -31,6 +31,10 @@ const CreateCourse = () => {
       icon: <HiOutlineClipboardCheck />
     }
   ]
+  const GenerateCourseLayout = () => {
+      const BASIC_PROMPT = "Generate A Course Tutorial on Following Detail With field Course Name, Description, Along with Chapter Name, about, Duration:"
+      const USER_INPUTPROMPT="Topic: "+userCourseInput?.topic+" , Level: "+userCourseInput?.level+", Duration: "+userCourseInput?.duration+", NoOf Chapters: "+userCourseInput?.noOfChapters+" , in JSON format"
+  }
   useEffect(()=>{
     console.log(userCourseInput);
     
@@ -75,7 +79,7 @@ const CreateCourse = () => {
       <div className='flex justify-between mt-10 '>
         <Button disabled={activeIndex==0} onClick={()=>setActiveIndex((activeIndex-1))}>Previous</Button>
         {activeIndex<2&&<Button onClick={() => setActiveIndex((activeIndex+1))}>Next</Button>}
-       {activeIndex==2 && <Button>Generate Course Layout</Button>}
+       {activeIndex==2 && <Button onClick={GenerateCourseLayout}>Generate Course Layout</Button>}
 
       </div>
       </div>

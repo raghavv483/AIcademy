@@ -1,9 +1,9 @@
 "use client"
 import React, { ReactNode, useState } from 'react'
-import { UserInputContext } from '../_context/UserInputContext'
+import { UserInputContext, CourseInput } from '../_context/UserInputContext'
 
 const layout = ({ children }: { children: ReactNode }) => {
-    const [userCourseInput, setUserCourseInput] = useState<any[]>([]);
+    const [userCourseInput, setUserCourseInput] = useState<CourseInput>({});
     return (
         <div>
             <UserInputContext.Provider value={{ userCourseInput, setUserCourseInput }}>
