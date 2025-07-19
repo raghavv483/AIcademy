@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1752951391306,
+      "tag": "0000_wandering_cloak",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1752955895442,
+      "tag": "0001_same_the_call",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1752956080668,
+      "tag": "0002_mixed_solo",
+      "breakpoints": true
+    }
+  ]
+}

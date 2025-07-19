@@ -14,19 +14,19 @@ const Sidebar = () => {
             path: '/dashboard'
         },
         {
-            id: 1,
+            id: 2,
             name: 'Explore',
             icon: <HiFolderOpen />,
             path: '/dashboard/explore'
         },
         {
-            id: 1,
+            id: 3,
             name: 'Upgrade',
             icon: <HiOutlineGift />,
             path: '/dashboard/upgrade'
         },
         {
-            id: 1,
+            id: 4,
             name: 'Logout',
             icon: <HiOutlineXCircle />,
             path: '/dashboard/logout'
@@ -40,9 +40,8 @@ const Sidebar = () => {
             <hr className='my-5'></hr>
             <ul>
                 {Menu.map((item) => (
-                    <Link href={item.path}>
+                    <Link href={item.path} key={item.path}>
                         <li
-                            key={item.path}
                             className={`flex items-center gap-6 text-gray-500 p-3 cursor-pointer hover:bg-gray-300 hover:text-black rounded ${item.path === path ? 'bg-gray-200 text-black' : ''}`}
                         >
                             <div className="text-3xl">{item.icon}</div>

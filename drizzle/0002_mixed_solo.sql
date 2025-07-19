@@ -1,0 +1,1 @@
+ALTER TABLE "courseList" ADD COLUMN "userName" varchar;
