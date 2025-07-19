@@ -1,9 +1,19 @@
-import React from 'react'
+"use client"
+import React, { useContext, useEffect, useState } from 'react'
 import { HiOutlineCash, HiOutlineLightBulb } from "react-icons/hi";
 import { HiOutlineClipboardCheck } from "react-icons/hi";
 import Header from '../dashboard/_components/Header';
+import { Button } from '@/components/ui/button';
+import SelectCategory from './_components/SelectCategory';
+import TopicDescription from './_components/TopicDescription';
+import SelectOption from './_components/SelectOption';
+import { UserInputContext } from '../_context/UserInputContext';
 
 const CreateCourse = () => {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const context = useContext(UserInputContext);
+  if (!context) throw new Error('UserInputContext.Provider is missing');
+  const { userCourseInput,setUserCourseInput } = context;
   const StepperOptions = [
     {
       id: 1,
@@ -21,6 +31,10 @@ const CreateCourse = () => {
       icon: <HiOutlineClipboardCheck />
     }
   ]
+  useEffect(()=>{
+    console.log(userCourseInput);
+    
+  },[userCourseInput])
   return (
     <div >
       <Header />
@@ -34,7 +48,7 @@ const CreateCourse = () => {
             className={`flex items-center justify-center 
                         w-10 h-10 rounded-full text-xl
                         ${
-                          idx === 0
+                          activeIndex>=idx
                             ? 'bg-purple-200 text-purple-700'
                             : 'bg-gray-200 text-gray-500'
                         }`}
@@ -52,10 +66,19 @@ const CreateCourse = () => {
   </div>
 </div>
 
-      
+      <div  className='px-10 md:px-20 lg:px-44 mt-10 '>
       {/* component */}
+      {activeIndex==0&&<SelectCategory/>}
+      {activeIndex==1&&<TopicDescription/>}
+      {activeIndex==2&&<SelectOption/>}
+      {/* Next Previous Button */}
+      <div className='flex justify-between mt-10 '>
+        <Button disabled={activeIndex==0} onClick={()=>setActiveIndex((activeIndex-1))}>Previous</Button>
+        {activeIndex<2&&<Button onClick={() => setActiveIndex((activeIndex+1))}>Next</Button>}
+       {activeIndex==2 && <Button>Generate Course Layout</Button>}
 
-      {/* Next Previos Button */}
+      </div>
+      </div>
     </div>
   )
 }
