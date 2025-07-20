@@ -49,7 +49,7 @@ const CreateCourse = () => {
     console.log(FINAL_PROMPT);
     const result = await getGroqChatCompletion(FINAL_PROMPT)
     console.log(result.choices[0].message.content);
-    
+
     const pushedCourseId = await SaveCourseLayoutInDb({
       userCourseInput,
       courseLayout: result.choices[0].message.content,
@@ -60,7 +60,7 @@ const CreateCourse = () => {
       },
     });
     router.replace("/create-course/" + pushedCourseId)
-    setLoading(true); 
+    setLoading(false);
   }
 
   useEffect(() => {

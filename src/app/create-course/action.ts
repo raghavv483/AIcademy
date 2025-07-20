@@ -74,28 +74,27 @@ export const UpdateCourseImage = async ({
   }
 };
 
-export const UpdateVideoId = async({
+export const UpdateVideoId = async ({
   content,
   videoId,
   courseId,
   chapterId
-}:{
-  content:any,
-  videoId:string,
-  courseId:string,
-  chapterId:any
-}) =>{
-    try {
-      await db.insert(Chapters).values({
-        chapterId,
-        courseId,
-        content,
-        videoId
-      })
-      return true;
-    } catch (error) {
-      console.log("error in inserting into Chapter Schema");
-      return false;
-    }
+}: {
+  content: any,
+  videoId: string,
+  courseId: string,
+  chapterId: any
+}) => {
+  try {
+    await db.insert(Chapters).values({
+      chapterId,
+      courseId,
+      content,
+      videoId
+    })
+    return true;
+  } catch (error) {
+    console.log("error in inserting into Chapter Schema");
+    return false;
+  }
 }
-  
