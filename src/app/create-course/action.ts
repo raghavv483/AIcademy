@@ -1,11 +1,12 @@
 "use server";
 import { useUser } from "@clerk/nextjs";
 import { db } from "../_configs/db";
-import { CourseList } from "../_configs/Schema";
+import { Chapters, CourseList } from "../_configs/Schema";
 import { v4 as uuidv4 } from "uuid";
+import { and, eq } from 'drizzle-orm';
 
 export const SaveCourseLayoutInDb = async ({
-    userCourseInput,
+  userCourseInput,
   courseLayout,
   user,
 }: {
@@ -13,25 +14,88 @@ export const SaveCourseLayoutInDb = async ({
   courseLayout: string | null;
   user: any;
 }) => {
-    const courseId = uuidv4(); // Generate UUID
-    //setLoading(true);
-   // const {user} = useUser()
+  const courseId = uuidv4(); // Generate UUID
+  //setLoading(true);
+  // const {user} = useUser()
+  try {
+    const result = await db.insert(CourseList).values({
+      courseId: courseId,
+      name: userCourseInput?.topic || 'Untitled Course',
+      level: userCourseInput?.level || 'Beginner',
+      courseOutput: courseLayout || null,
+      createdBy: user?.primaryEmailAddress?.emailAddress || '',
+      username: user?.fullName || null,
+      userProfileImage: user?.imageUrl || null
+    });
+
+    // setLoading(false);
+
+    return courseId;
+  } catch (error) {
+    console.error('Database insertion error:', error);
+    //setLoading(false);
+  }
+};
+
+export const GetCourse = async (courseId: string, fullName: string) => {
+  try {
+    const result = await db.select().from(CourseList)
+      .where(
+        and(
+          eq(CourseList.courseId, courseId),
+          eq(CourseList.username, fullName)
+        )
+      );
+
+    return result;
+  } catch (error) {
+    console.error('Database query error:', error);
+    throw error;
+  }
+
+
+};
+export const UpdateCourseImage = async ({
+  courseId,
+  imageUrl,
+}: {
+  courseId: string;
+  imageUrl: string;
+}) => {
+  try {
+    await db
+      .update(CourseList)
+      .set({ courseBanner: imageUrl }) // Make sure your schema has an imageUrl field
+      .where(eq(CourseList.courseId, courseId));
+    return true;
+  } catch (error) {
+    console.error('Database update error:', error);
+    return false;
+  }
+};
+
+export const UpdateVideoId = async({
+  content,
+  videoId,
+  courseId,
+  chapterId
+}:{
+  content:any,
+  videoId:string,
+  courseId:string,
+  chapterId:any
+}) =>{
     try {
-      const result = await db.insert(CourseList).values({
-        courseId: courseId,
-        name: userCourseInput?.topic || 'Untitled Course',
-        level: userCourseInput?.level || 'Beginner',
-        courseOutput: courseLayout || null,
-        createdBy: user?.primaryEmailAddress?.emailAddress || '',
-        userName: user?.fullName || null,
-        userProfileImage: user?.imageUrl || null
-      });
-      
-     // setLoading(false);
-     
-      return courseId;
+      await db.insert(Chapters).values({
+        chapterId,
+        courseId,
+        content,
+        videoId
+      })
+      return true;
     } catch (error) {
-      console.error('Database insertion error:', error);
-      //setLoading(false);
+      console.log("error in inserting into Chapter Schema");
+      return false;
     }
-  };
+}
+  

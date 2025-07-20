@@ -1,21 +1,34 @@
 "use client"
 import { Button } from '@/components/ui/button'
 import { useUser } from '@clerk/nextjs'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation';
 import React from 'react'
+import { useUserCourseList } from '../_context/UserCourseListContext';
 
 const AddCourse = () => {
-    const { user } = useUser()
+    const { user } = useUser();
+    const { userCourseList } = useUserCourseList();
+    const maxCourses = 5;
+    const router = useRouter();
+    const handleClick = () => {
+        if (userCourseList.length >= maxCourses) {
+            router.push('/dashboard/upgrade');
+        } else {
+            router.push('/create-course');
+        }
+    };
     return (
-        <div className='flex items-center justify-between w-full px-6'>
-            <div>
-                <h2 className='text-2xl'>Hello,<span className='font-bold'>{user?.fullName}</span></h2>
-                <p className='text-sm text-gray-500'>Create new course with AI, Share with friends and earn from it</p>
+        <div className="bg-violet-50 border border-violet-200 rounded-lg shadow p-6 mb-6 flex flex-col md:flex-row items-center justify-between">
+            <div className="mb-4 md:mb-0">
+                <h2 className="text-2xl font-bold text-violet-700">Hello,<span className="ml-2 uppercase">{user?.fullName || user?.username}</span></h2>
+                <p className="text-violet-500 mt-2">Create new course with AI, Share with friends and earn from it</p>
             </div>
-            <Link  href={'/create-course'}>
-               <Button className='cursor-pointer '>+ Create AI Course</Button>
-            </Link>
-            
+            <Button
+                className="mt-4 md:mt-0 px-6 py-3 text-lg font-semibold rounded-full bg-violet-600 text-white hover:bg-violet-700"
+                onClick={handleClick}
+            >
+                + Create AI Course
+            </Button>
         </div>
     )
 }

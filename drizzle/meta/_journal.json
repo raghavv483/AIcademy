@@ -22,6 +22,27 @@
       "when": 1752956080668,
       "tag": "0002_mixed_solo",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1752994234859,
+      "tag": "0003_first_arclight",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1753013573512,
+      "tag": "0004_amazing_quentin_quire",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1753032416438,
+      "tag": "0005_pretty_tony_stark",
+      "breakpoints": true
     }
   ]
 }

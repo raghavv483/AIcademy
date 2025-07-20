@@ -20,7 +20,7 @@ const Hero = () => {
       <div className="mt-4 flex justify-center gap-4 sm:mt-6">
         <a
           className="inline-block rounded border border-voilet-600 bg-violet-600 text-violet-600 px-5 py-3 font-medium text-white shadow-sm transition-colors hover:text-violet-100"
-          href="#"
+          href="/dashboard"
         >
           Get Started
         </a>

@@ -7,7 +7,8 @@ const nextConfig: NextConfig = {
 
 module.exports = {
   images: {
-    domains: ['imgs.search.brave.com'],
+    domains: ['imgs.search.brave.com', 'vylqagmifkmroogfukkh.supabase.co'],
+
   },
 };
 
