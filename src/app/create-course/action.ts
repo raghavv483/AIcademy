@@ -98,3 +98,17 @@ export const UpdateVideoId = async ({
     return false;
   }
 }
+
+export const GetCourseContent = async (courseId: string) => {
+  try {
+    const content = await db
+      .select()
+      .from(Chapters)
+      .where(eq(Chapters.courseId, courseId));
+      
+    return content;
+  } catch (error) {
+    console.error('Error fetching course content:', error);
+    throw error;
+  }
+};

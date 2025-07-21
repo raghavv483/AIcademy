@@ -19,7 +19,7 @@ export async function getGroqChatCompletion(prompt: string) {
         ],
         model: "llama-3.3-70b-versatile",
         response_format: { type: "json_object" },
-        temperature: 0.3
+        temperature: 0
     });
 }
 export async function GenerateChapterContent_AI(prompt: string) {
@@ -32,6 +32,6 @@ export async function GenerateChapterContent_AI(prompt: string) {
         ],
         model: "llama-3.3-70b-versatile",
         response_format: { type: "json_object" },
-        temperature: 0.3
+        temperature: 0
     });
 }

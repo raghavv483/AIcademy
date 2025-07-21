@@ -17,12 +17,12 @@ const CourseBasicInfo = ({ Course }: any) => {
     const [loading, setLoading] = useState(false);
     const courseOutput = Course?.courseOutput;
     const [selectedFile, setselectedFile] = useState<string>()
-        useEffect(()=>{
-            if(Course){
-                setselectedFile(Course?.courseBanner)
-            }
-            
-        },[Course])
+    useEffect(() => {
+        if (Course) {
+            setselectedFile(Course?.courseBanner)
+        }
+
+    }, [Course])
     const handlefiles = async (event: { target: { files: any; }; }) => {
         const files = event.target.files[0];
         if (!files) {
@@ -53,34 +53,41 @@ const CourseBasicInfo = ({ Course }: any) => {
         }
     };
     const GenerateChapterContent = async () => {
+        setLoading(true);
         const chapters = Course?.courseOutput?.Chapters;
-        if (!Array.isArray(chapters)) return;
-        chapters.forEach(async (chapter: any, index: number) => {
-            const PROMPT = `Explain the concept in Detail on Topic: ${Course.courseOutput.CourseName}, Chapter: ${chapter.ChapterName}, in JSON Format with list of array with field as title, description in detail, Code Example <precode> if applicable`;
-            if (index < 3) {
-                setLoading(true)
+        if (!Array.isArray(chapters)) {
+            setLoading(false);
+            return;
+        }
+
+        // Sequentially process all chapters to avoid serverless timeouts and API rate limits
+        for (let index = 0; index < chapters.length; index++) {
+            const chapter = chapters[index];
+            const PROMPT = `Generate content for a chapter titled "${chapter.ChapterName}" within a course about "${Course.courseOutput.CourseName}".\n\nYour entire response MUST be a single, valid JSON object and nothing else. Do not include any text, explanations, or markdown formatting before or after the JSON object.\n\nThe JSON object must conform to this exact structure:\n{\n  \"title\": \"The name of the chapter\",\n  \"description\": \"A detailed overview of the chapter's main topic.\",\n  \"details\": [\n    {\n      \"title\": \"Title of the first sub-topic\",\n      \"description\": \"Detailed explanation for the first sub-topic.\",\n      \"codeExample\": \"A relevant code snippet, if applicable. Use '\\\\n' for newlines within the code string.\"\n    },\n    {\n      \"title\": \"Title of the second sub-topic\",\n      \"description\": \"Detailed explanation for the second sub-topic.\"\n    }\n  ]\n}\n\n- The top-level keys must be \"title\", \"description\", and \"details\".\n- The \"details\" key must always be an array of objects, even if there is only one sub-topic.\n- Each object in the \"details\" array must have a \"title\" and a \"description\". It may optionally have a \"codeExample\".\n- Do not use any other keys for the sub-topic array. Stick strictly to the key name \"details\".\n- Ensure all strings are properly escaped for valid JSON.`;
+            try {
+                const content = await GenerateChapterContent_AI(PROMPT);
+                const result = content.choices[0].message.content;
+                let videoId = ''; // Default to empty string
+
+                // Make the YouTube API call resilient
                 try {
-                    let videoId = ""
-                    const content = await GenerateChapterContent_AI(PROMPT)
-                    //console.log(result.choices[0].message.content);
-                    const result = content.choices[0].message.content
-                    // generate video url
                     const query = `${courseOutput.CourseName}:${chapter.ChapterName}`;
-                    const response = await axios.get(`/api/get-videos?q=${encodeURIComponent(query)}`)
-                    videoId = response.data[0]?.id?.videoId
-
-                    await UpdateVideoId({ content: result, videoId, courseId: Course?.courseId, chapterId: index });
-
-                    //save chaptercontent+video url
-                    setLoading(false)
-                } catch (error) {
-                    setLoading(false)
-                    console.log("error in fetching chapter content");
+                    const response = await axios.get(`/api/get-videos?q=${encodeURIComponent(query)}`);
+                    videoId = response.data[0]?.id?.videoId || '';
+                } catch (videoError) {
+                    console.error(`Could not fetch video for chapter "${chapter.ChapterName}". Defaulting to empty videoId.`, videoError);
                 }
-                router.replace('/create-course/' + Course?.courseId + "/finish")
-            }
-        });
 
+                await UpdateVideoId({ content: result, videoId, courseId: Course?.courseId, chapterId: index });
+                console.log(`Successfully processed chapterId: ${index}`);
+
+            } catch (error) {
+                console.error(`Failed to process chapterId ${index}:`, error);
+            }
+        }
+
+        setLoading(false);
+        router.replace('/create-course/' + Course?.courseId + "/finish");
     };
     return (
         <>
