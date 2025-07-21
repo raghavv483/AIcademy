@@ -22,7 +22,7 @@ const Hero = () => {
                 className="inline-block rounded border border-voilet-600 bg-violet-600 text-violet-600 px-5 py-3 font-medium shadow-sm transition-colors hover:text-violet-100"
                 href="/dashboard"
               >
-                Get Started
+                
               </a>
 
             </div>
