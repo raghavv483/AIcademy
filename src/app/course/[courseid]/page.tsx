@@ -1,10 +1,10 @@
-"use client"
-import React, { useEffect, useState } from 'react'
-import { getCourseById } from '../action'
+"use client";
+import React, { useEffect, useState } from "react";
+import { getCourseById } from "../action";
 
-import CourseBasicInfo from '@/app/create-course/[courseId]/_components/CourseBasicInfo';
-import CourseDetail from '@/app/create-course/[courseId]/_components/CourseDetail';
-import ChapterList from '@/app/create-course/[courseId]/_components/ChapterList'
+import CourseBasicInfo from "@/app/create-course/[courseId]/_components/CourseBasicInfo";
+import CourseDetail from "@/app/create-course/[courseId]/_components/CourseDetail";
+import ChapterList from "@/app/create-course/[courseId]/_components/ChapterList";
 
 const SkeletonLoader = () => (
   <div className="grid grid-cols-1 md:grid-cols-3 gap-8 animate-pulse">
@@ -36,38 +36,51 @@ interface Params {
   courseid: string;
 }
 
+interface CourseOutput {
+  CourseName?: string;
+  Description?: string;
+  Duration?: string;
+  Level?: string;
+  Chapters?: Array<any>; // Add a specific type if known
+}
+
 interface Course {
   courseId: string;
   courseBanner: string;
   name: string;
   includeVideo?: string;
   level?: string;
-  courseOutput?: {
-    CourseName?: string;
-    Description?: string;
-    Duration?: string;
-    Level?: string;
-    Chapters?: Array<any>; // You can further type this if you know the structure
-  };
+  courseOutput?: CourseOutput;
 }
 
-const Course = ({ params }: { params: Params }) => {
+interface CoursePageProps {
+  params: Params;
+}
+
+// Main component
+const Course = ({ params }: CoursePageProps) => {
   const [course, setCourse] = useState<Course[]>([]);
 
   useEffect(() => {
-    const getCourse = async () => {
-      const result = await getCourseById(params.courseid);
-      const fixedResult = Array.isArray(result)
-        ? result.map((item) => ({
-          ...item,
-          courseBanner: item.courseBanner ?? "",
-          courseOutput: item.courseOutput as Course["courseOutput"] // ensure correct type
-        }))
-        : [];
-      setCourse(fixedResult as Course[]);
+    const fetchCourse = async () => {
+      try {
+        const result = await getCourseById(params.courseid);
+        const fixedResult = Array.isArray(result)
+          ? result.map((item) => ({
+              ...item,
+              courseBanner: item.courseBanner ?? "",
+              courseOutput: item.courseOutput as CourseOutput,
+            }))
+          : [];
+        setCourse(fixedResult);
+      } catch (error) {
+        console.error("Error fetching course:", error);
+        setCourse([]);
+      }
     };
+
     if (params?.courseid) {
-      getCourse();
+      fetchCourse();
     }
   }, [params]);
 
@@ -90,7 +103,7 @@ const Course = ({ params }: { params: Params }) => {
         <SkeletonLoader />
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Course
+export default Course;

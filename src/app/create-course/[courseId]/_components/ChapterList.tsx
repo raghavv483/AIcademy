@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaBookOpen, FaClock,FaRegCheckCircle } from 'react-icons/fa';
+import { FaBookOpen, FaClock } from 'react-icons/fa';
 
 const ChapterList = ({ Course }: any) => {
     const chapters = Course?.courseOutput?.Chapters || [];
