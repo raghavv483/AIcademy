@@ -1,16 +1,13 @@
-import { db } from '@/app/_configs/db';
-import { CourseList } from '@/app/_configs/Schema';
+"use client"
 import { Button } from '@/components/ui/button';
-import { eq } from 'drizzle-orm';
 import React, { useEffect, useState } from 'react';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { UpdateCourseImage, UpdateVideoId } from '../../action';
 import { GenerateChapterContent_AI } from '@/app/_configs/AiModels';
 import LoadingDialog from '../../_components/LoadingDialog';
-import axios from 'axios'
-// @ts-ignore
-import getVideos from '../../api/get-videos';
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const CourseBasicInfo = ({ Course }: any) => {
     const router = useRouter()
@@ -79,7 +76,7 @@ const CourseBasicInfo = ({ Course }: any) => {
                 }
 
                 await UpdateVideoId({ content: result, videoId, courseId: Course?.courseId, chapterId: index });
-               // console.log(`Successfully processed chapterId: ${index}`);
+                // console.log(`Successfully processed chapterId: ${index}`);
 
             } catch (error) {
                 console.error(`Failed to process chapterId ${index}:`, error);
@@ -109,7 +106,7 @@ const CourseBasicInfo = ({ Course }: any) => {
                         <div className="flex-1 bg-blue-100 rounded-2xl flex items-center justify-center min-h-[320px] p-10 cursor-pointer relative">
                             {selectedFile ? (
                                 <>
-                                    <img src={selectedFile} alt="Preview" className="max-h-full max-w-full object-cover rounded-2xl " />
+                                    <Image src={selectedFile || ''} alt="Preview" width={400} height={300} className="max-h-full max-w-full object-cover rounded-2xl " />
                                     <Button
                                         type="button"
                                         onClick={e => {

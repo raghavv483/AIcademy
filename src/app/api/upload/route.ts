@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     const filePath = `uploads/${fileName}`;
 
     // Upload to Supabase Storage
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
         .from('aicadmeyfilestorage') // <-- replace with your bucket name
         .upload(filePath, file, {
             cacheControl: '3600',

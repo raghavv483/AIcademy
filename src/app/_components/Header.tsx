@@ -1,7 +1,5 @@
-import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 import React from 'react'
-import logo from '../../../constats'
 import Link from 'next/link'
 
 const Header = () => {

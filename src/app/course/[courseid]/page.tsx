@@ -55,20 +55,21 @@ const Course = ({ params }: { params: Params }) => {
   const [course, setCourse] = useState<Course[]>([]);
 
   useEffect(() => {
-    params?.courseid && getCourse();
-  }, [params])
-
-  const getCourse = async () => {
-    const result = await getCourseById(params.courseid);
-    const fixedResult = Array.isArray(result)
-      ? result.map((item) => ({
+    const getCourse = async () => {
+      const result = await getCourseById(params.courseid);
+      const fixedResult = Array.isArray(result)
+        ? result.map((item) => ({
           ...item,
           courseBanner: item.courseBanner ?? "",
           courseOutput: item.courseOutput as Course["courseOutput"] // ensure correct type
         }))
-      : [];
-    setCourse(fixedResult as Course[]);
-  }
+        : [];
+      setCourse(fixedResult as Course[]);
+    };
+    if (params?.courseid) {
+      getCourse();
+    }
+  }, [params]);
 
   return (
     <div className="p-4 sm:p-6 md:p-8">

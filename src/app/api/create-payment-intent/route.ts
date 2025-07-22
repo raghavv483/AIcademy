@@ -14,7 +14,7 @@ export async function POST(req: Request) {
       automatic_payment_methods: { enabled: true },
     });
     return NextResponse.json({ clientSecret: paymentIntent.client_secret });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to create payment intent' }, { status: 500 });
   }
 }

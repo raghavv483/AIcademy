@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import {
     Card,
     CardContent,
 } from "@/components/ui/card"
-import { UserInputContext } from '@/app/_context/UserInputContext'
+
 
 const categories = [
     { label: 'Programming' },

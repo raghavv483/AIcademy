@@ -15,8 +15,6 @@ export const SaveCourseLayoutInDb = async ({
   user: any;
 }) => {
   const courseId = uuidv4(); // Generate UUID
-  //setLoading(true);
-  // const {user} = useUser()
   try {
     await db.insert(CourseList).values({
       courseId: courseId,
@@ -28,22 +26,27 @@ export const SaveCourseLayoutInDb = async ({
       userProfileImage: user?.imageUrl || null
     });
 
-    // setLoading(false);
-
     return courseId;
   } catch (error: unknown) {
     let message = 'Unknown error';
-    if (error && typeof error === 'object' && 'message' in error && typeof (error as any).message === 'string') {
+    if (
+      error &&
+      typeof error === 'object' &&
+      'message' in error &&
+      typeof (error as any).message === 'string'
+    ) {
       message = (error as { message: string }).message;
     }
-    console.error('Database insertion error:', error);
-    //setLoading(false);
+    console.error('Database insertion error:', message);
+    // Optionally rethrow or return appropriate value here:
+    // throw error;
   }
 };
 
 export const GetCourse = async (courseId: string, fullName: string) => {
   try {
-    const result = await db.select().from(CourseList)
+    const result = await db.select()
+      .from(CourseList)
       .where(
         and(
           eq(CourseList.courseId, courseId),
@@ -56,9 +59,8 @@ export const GetCourse = async (courseId: string, fullName: string) => {
     console.error('Database query error:', error);
     throw error;
   }
-
-
 };
+
 export const UpdateCourseImage = async ({
   courseId,
   imageUrl,
@@ -69,7 +71,7 @@ export const UpdateCourseImage = async ({
   try {
     await db
       .update(CourseList)
-      .set({ courseBanner: imageUrl }) // Make sure your schema has an imageUrl field
+      .set({ courseBanner: imageUrl }) // Make sure your schema has a courseBanner field
       .where(eq(CourseList.courseId, courseId));
     return true;
   } catch (error) {
@@ -95,13 +97,13 @@ export const UpdateVideoId = async ({
       courseId,
       content,
       videoId
-    })
+    });
     return true;
   } catch (error) {
-    console.log("error in inserting into Chapter Schema");
+    console.error("Error in inserting into Chapter Schema", error);
     return false;
   }
-}
+};
 
 export const GetCourseContent = async (courseId: string) => {
   try {

@@ -1,9 +1,8 @@
 import React from 'react';
-import { FaChartBar, FaClock, FaVideo, FaListOl, FaBookOpen } from 'react-icons/fa';
+import { FaChartBar, FaClock, FaVideo, FaListOl } from 'react-icons/fa';
 
 const CourseDetail = ({ Course }: any) => {
     const courseOutput = Course?.courseOutput;
-    const chapters = courseOutput?.Chapters || [];
     return (
         <div className="border rounded-xl shadow-sm p-8 mt-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
@@ -41,7 +40,7 @@ const CourseDetail = ({ Course }: any) => {
                 </div>
             </div>
 
-           
+
         </div>
     );
 };
