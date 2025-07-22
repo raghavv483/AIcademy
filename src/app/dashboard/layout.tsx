@@ -1,7 +1,6 @@
 "use client"
 import { ReactNode } from 'react';
 import Sidebar from './_components/Sidebar';
-import { UserButton } from '@clerk/nextjs';
 import Header from './_components/Header';
 import { UserCourseListProvider } from '../_context/UserCourseListContext';
 

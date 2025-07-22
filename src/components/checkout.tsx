@@ -22,16 +22,7 @@ function PaymentForm() {
     const [message, setMessage] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
-    interface HandleSubmitEvent extends React.FormEvent<HTMLFormElement> { }
-
-    interface ConfirmPaymentResult {
-        error?: {
-            type: string;
-            message?: string;
-        };
-    }
-
-    const handleSubmit = async (e: HandleSubmitEvent): Promise<void> => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
 
         if (!stripe || !elements) {
@@ -42,7 +33,7 @@ function PaymentForm() {
 
         setIsLoading(true);
 
-        const { error }: ConfirmPaymentResult = await stripe.confirmPayment({
+        const { error } = await stripe.confirmPayment({
             elements,
             confirmParams: {
                 // Make sure to change this to your payment completion page
@@ -66,10 +57,6 @@ function PaymentForm() {
         }
 
         setIsLoading(false);
-    };
-
-    const paymentElementOptions = {
-        layout: "accordion",
     };
 
     return (
@@ -104,9 +91,6 @@ interface CheckoutFormProps {
 }
 
 export default function CheckoutForm({ clientSecret }: CheckoutFormProps) {
-    const appearance = {
-        theme: 'stripe',
-    };
     return (
         <Elements stripe={stripePromise} options={{ appearance: { theme: "stripe" as const }, clientSecret }}>
             <PaymentForm />

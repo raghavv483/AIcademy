@@ -5,7 +5,6 @@ import React from 'react';
 import { SignOutButton } from "@clerk/nextjs";
 
 const Logout = () => {
-  const { user } = useUser();
   return (
     <div>
       <SignOutButton>
