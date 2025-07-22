@@ -29,13 +29,31 @@ interface Course {
   courseOutput?: CourseOutput;
 }
 
-const Course = ({ params }: { params: { courseid: string } }) => {
+// Fix 1: Correct PageProps interface
+interface PageProps {
+  params: Promise<{ courseid: string }>;
+}
+
+const Course = ({ params }: PageProps) => {
   const [course, setCourse] = useState<Course[]>([]);
+  const [courseId, setCourseId] = useState<string | null>(null);
+
+  // Fix 2: Handle async params
+  useEffect(() => {
+    const getParams = async () => {
+      const resolvedParams = await params;
+      setCourseId(resolvedParams.courseid);
+    };
+    
+    getParams();
+  }, [params]);
 
   useEffect(() => {
     const fetchCourse = async () => {
+      if (!courseId) return;
+      
       try {
-        const result = await getCourseById(params.courseid);
+        const result = await getCourseById(courseId);
         const fixedResult = Array.isArray(result)
           ? result.map((item) => ({
               ...item,
@@ -50,10 +68,8 @@ const Course = ({ params }: { params: { courseid: string } }) => {
       }
     };
 
-    if (params?.courseid) {
-      fetchCourse();
-    }
-  }, [params]);
+    fetchCourse();
+  }, [courseId]);
 
   return (
     <div className="p-4 sm:p-6 md:p-8">
