@@ -79,7 +79,7 @@ const CourseBasicInfo = ({ Course }: any) => {
                 }
 
                 await UpdateVideoId({ content: result, videoId, courseId: Course?.courseId, chapterId: index });
-                console.log(`Successfully processed chapterId: ${index}`);
+               // console.log(`Successfully processed chapterId: ${index}`);
 
             } catch (error) {
                 console.error(`Failed to process chapterId ${index}:`, error);

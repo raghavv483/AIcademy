@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     const { data: publicUrlData } = supabase.storage
         .from('aicadmeyfilestorage')
         .getPublicUrl(filePath);
-    console.log('Public URL Data:', publicUrlData);
+    //console.log('Public URL Data:', publicUrlData);
 
     return NextResponse.json({ url: publicUrlData.publicUrl });
 }

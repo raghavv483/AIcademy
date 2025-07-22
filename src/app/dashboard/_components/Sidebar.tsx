@@ -58,7 +58,7 @@ const Sidebar = () => {
             <div className='absolute bottom-20 w-[80%]'>
                 <Progress value={progressValue} className="h-2 bg-violet-100" />
                 <div className="mt-2 font-semibold text-lg text-black">{userCourseList.length} Out of {maxCourses} Course created</div>
-                <div className="text-sm text-gray-500">Upgrade your plan for unlimited course generate</div>
+                <div className="text-sm text-gray-500"> your plan for unlimited course generate</div>
             </div>
 
         </div>

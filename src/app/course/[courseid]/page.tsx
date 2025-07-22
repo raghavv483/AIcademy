@@ -43,7 +43,7 @@ const Course = ({ params }: any) => {
   const getCourse = async () => {
     const result = await getCourseById(params.courseid);
     setCourse(result); // setCourse expects an array, so set the whole result
-    console.log(result[0]);
+    //console.log(result[0]);
   }
 
   return (

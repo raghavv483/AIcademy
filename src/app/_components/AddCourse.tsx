@@ -24,7 +24,7 @@ const AddCourse = () => {
                 <p className="text-violet-500 mt-2">Create new course with AI, Share with friends and earn from it</p>
             </div>
             <Button
-                className="mt-4 md:mt-0 px-6 py-3 text-lg font-semibold rounded-full bg-violet-600 text-white hover:bg-violet-700"
+                className="mt-4 md:mt-0 px-6 py-3 cursor-pointer text-lg font-semibold rounded-full bg-violet-600 text-white hover:bg-violet-700"
                 onClick={handleClick}
             >
                 + Create AI Course

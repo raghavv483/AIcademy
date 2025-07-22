@@ -1,9 +1,15 @@
+import StripeUpgrade from "./stripe-upgrade";
+
+
+
 import React from 'react'
 
-const upgrade = () => {
+const upgradePage = () => {
   return (
-    <div>upgrade</div>
+    <div>
+        <StripeUpgrade />;
+    </div>
   )
 }
 
-export default upgrade
+export default upgradePage

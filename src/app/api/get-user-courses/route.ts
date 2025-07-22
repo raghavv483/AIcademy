@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: 'Missing username' }, { status: 400 });
     }
     try {
-        console.log(fullName);
+       // console.log(fullName);
         
         const courses = await getUserCourse({ username:fullName });
         return NextResponse.json(courses);

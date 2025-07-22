@@ -21,18 +21,18 @@ const CourseLayout = ({ params }: any) => {
   const fetchCourse = async () => {
 
     if (!user?.fullName || !params?.courseId) {
-      console.log("hi");
+      //console.log("hi");
 
       return;
     }
 
     setLoading(true);
     try {
-      console.log("hi2");
+      //console.log("hi2");
 
       const result = await GetCourse(params.courseId, user.fullName);
       setCourseData(result[0])
-      console.log(result[0]);
+      //console.log(result[0]);
     } catch (error) {
       console.error('Error fetching course:', error);
     } finally {
