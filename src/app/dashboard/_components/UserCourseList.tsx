@@ -12,6 +12,23 @@ const SkeletonCard = () => (
   </div>
 );
 
+interface CourseOutput {
+  CourseName?: string;
+  Description?: string;
+  Duration?: string;
+  Level?: string;
+  Chapters?: Array<any>;
+}
+
+interface Course {
+  courseId: string;
+  courseBanner: string;
+  name: string;
+  includeVideo?: string;
+  level?: string;
+  courseOutput?: CourseOutput;
+}
+
 const UserCourseList = () => {
   const { user } = useUser();
   const { userCourseList, setUserCourseList } = useUserCourseList();
@@ -22,12 +39,26 @@ const UserCourseList = () => {
       if (user && user.fullName) {
         setLoading(true);
         try {
-             setLoading(true);
-          const res = await fetch(`/api/get-user-courses?fullName=${user.fullName}`);
+          const res = await fetch(
+            `/api/get-user-courses?fullName=${encodeURIComponent(user.fullName)}`
+          );
           const data = await res.json();
-          setUserCourseList(data || []);
+
+          const normalizedCourses: Course[] = Array.isArray(data)
+            ? data.map((c) => ({
+              courseId: c.courseId ?? "",
+              courseBanner: c.courseBanner ?? "",
+              name: c.name ?? "",
+              includeVideo: c.includeVideo,
+              level: c.level,
+              courseOutput: c.courseOutput ?? {},
+            }))
+            : [];
+
+          setUserCourseList(normalizedCourses);
         } catch (error) {
           console.log("error fetching course", error);
+          setUserCourseList([]);
         } finally {
           setLoading(false);
         }
@@ -50,7 +81,7 @@ const UserCourseList = () => {
       ) : userCourseList.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {userCourseList.map((course, idx) => (
-            <CourseCard key={idx} course={course} />
+            <CourseCard key={idx} course={course as any} />
           ))}
         </div>
       ) : (

@@ -8,7 +8,7 @@ import ChapterList from "@/app/create-course/[courseId]/_components/ChapterList"
 
 const SkeletonLoader = () => (
   <div className="grid grid-cols-1 md:grid-cols-3 gap-8 animate-pulse">
-    {/* ...Skeleton content as before... */}
+    {/* ...Skeleton content... */}
   </div>
 );
 
@@ -29,12 +29,12 @@ interface Course {
   courseOutput?: CourseOutput;
 }
 
-// Fix 1: Correct PageProps interface - use synchronous params
-interface PageProps {
-  params: { courseid: string };
-}
 
-const Course = ({ params }: PageProps) => {
+export default function CoursePage({
+  params,
+}: {
+  params: { courseid: string };
+}) {
   const [course, setCourse] = useState<Course[]>([]);
 
   useEffect(() => {
@@ -43,10 +43,10 @@ const Course = ({ params }: PageProps) => {
         const result = await getCourseById(params.courseid);
         const fixedResult = Array.isArray(result)
           ? result.map((item) => ({
-            ...item,
-            courseBanner: item.courseBanner ?? "",
-            courseOutput: item.courseOutput as CourseOutput,
-          }))
+              ...item,
+              courseBanner: item.courseBanner ?? "",
+              courseOutput: item.courseOutput as CourseOutput,
+            }))
           : [];
         setCourse(fixedResult);
       } catch (error) {
@@ -77,6 +77,4 @@ const Course = ({ params }: PageProps) => {
       )}
     </div>
   );
-};
-
-export default Course;
+}

@@ -1,15 +1,9 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
-};
-// next.config.js
-
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  //output: "export", // enables static export
   images: {
-    domains: ['imgs.search.brave.com', 'vylqagmifkmroogfukkh.supabase.co'],
-
+    domains: ["imgs.search.brave.com", "vylqagmifkmroogfukkh.supabase.co"],
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
