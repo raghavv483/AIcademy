@@ -1,5 +1,5 @@
 "use server";
-import { useUser } from "@clerk/nextjs";
+
 import { db } from "../_configs/db";
 import { Chapters, CourseList } from "../_configs/Schema";
 import { v4 as uuidv4 } from "uuid";
@@ -18,7 +18,7 @@ export const SaveCourseLayoutInDb = async ({
   //setLoading(true);
   // const {user} = useUser()
   try {
-    const result = await db.insert(CourseList).values({
+    await db.insert(CourseList).values({
       courseId: courseId,
       name: userCourseInput?.topic || 'Untitled Course',
       level: userCourseInput?.level || 'Beginner',
@@ -31,7 +31,11 @@ export const SaveCourseLayoutInDb = async ({
     // setLoading(false);
 
     return courseId;
-  } catch (error) {
+  } catch (error: unknown) {
+    let message = 'Unknown error';
+    if (error && typeof error === 'object' && 'message' in error && typeof (error as any).message === 'string') {
+      message = (error as { message: string }).message;
+    }
     console.error('Database insertion error:', error);
     //setLoading(false);
   }
@@ -105,7 +109,7 @@ export const GetCourseContent = async (courseId: string) => {
       .select()
       .from(Chapters)
       .where(eq(Chapters.courseId, courseId));
-      
+
     return content;
   } catch (error) {
     console.error('Error fetching course content:', error);

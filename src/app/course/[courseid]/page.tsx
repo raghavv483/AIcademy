@@ -32,9 +32,27 @@ const SkeletonLoader = () => (
   </div>
 );
 
+interface Params {
+  courseid: string;
+}
 
-const Course = ({ params }: any) => {
-  const [course, setCourse] = useState<any[]>([]);
+interface Course {
+  courseId: string;
+  courseBanner: string;
+  name: string;
+  includeVideo?: string;
+  level?: string;
+  courseOutput?: {
+    CourseName?: string;
+    Description?: string;
+    Duration?: string;
+    Level?: string;
+    Chapters?: Array<any>; // You can further type this if you know the structure
+  };
+}
+
+const Course = ({ params }: { params: Params }) => {
+  const [course, setCourse] = useState<Course[]>([]);
 
   useEffect(() => {
     params?.courseid && getCourse();
@@ -42,8 +60,14 @@ const Course = ({ params }: any) => {
 
   const getCourse = async () => {
     const result = await getCourseById(params.courseid);
-    setCourse(result); // setCourse expects an array, so set the whole result
-    //console.log(result[0]);
+    const fixedResult = Array.isArray(result)
+      ? result.map((item) => ({
+          ...item,
+          courseBanner: item.courseBanner ?? "",
+          courseOutput: item.courseOutput as Course["courseOutput"] // ensure correct type
+        }))
+      : [];
+    setCourse(fixedResult as Course[]);
   }
 
   return (
