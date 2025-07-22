@@ -1,17 +1,18 @@
-"use client"
-import { Button } from '@/components/ui/button'
-import { useUser } from '@clerk/nextjs'
-import React from 'react'
+"use client";
+import { Button } from '@/components/ui/button';
+import { useUser } from '@clerk/nextjs';
+import React from 'react';
 import { SignOutButton } from "@clerk/nextjs";
-const logout = () => {
-  const {user} = useUser()
+
+const Logout = () => {
+  const { user } = useUser();
   return (
     <div>
       <SignOutButton>
         <Button>Logout</Button>
       </SignOutButton>
-      </div>
-  )
-}
+    </div>
+  );
+};
 
-export default logout
+export default Logout;
