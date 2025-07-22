@@ -29,37 +29,24 @@ interface Course {
   courseOutput?: CourseOutput;
 }
 
-// Fix 1: Correct PageProps interface
+// Fix 1: Correct PageProps interface - use synchronous params
 interface PageProps {
-  params: Promise<{ courseid: string }>;
+  params: { courseid: string };
 }
 
 const Course = ({ params }: PageProps) => {
   const [course, setCourse] = useState<Course[]>([]);
-  const [courseId, setCourseId] = useState<string | null>(null);
-
-  // Fix 2: Handle async params
-  useEffect(() => {
-    const getParams = async () => {
-      const resolvedParams = await params;
-      setCourseId(resolvedParams.courseid);
-    };
-    
-    getParams();
-  }, [params]);
 
   useEffect(() => {
     const fetchCourse = async () => {
-      if (!courseId) return;
-      
       try {
-        const result = await getCourseById(courseId);
+        const result = await getCourseById(params.courseid);
         const fixedResult = Array.isArray(result)
           ? result.map((item) => ({
-              ...item,
-              courseBanner: item.courseBanner ?? "",
-              courseOutput: item.courseOutput as CourseOutput,
-            }))
+            ...item,
+            courseBanner: item.courseBanner ?? "",
+            courseOutput: item.courseOutput as CourseOutput,
+          }))
           : [];
         setCourse(fixedResult);
       } catch (error) {
@@ -68,8 +55,10 @@ const Course = ({ params }: PageProps) => {
       }
     };
 
-    fetchCourse();
-  }, [courseId]);
+    if (params?.courseid) {
+      fetchCourse();
+    }
+  }, [params.courseid]);
 
   return (
     <div className="p-4 sm:p-6 md:p-8">
