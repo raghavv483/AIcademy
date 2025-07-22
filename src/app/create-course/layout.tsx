@@ -1,16 +1,12 @@
-"use client"
-import React, { ReactNode, useState } from 'react'
-import { UserInputContext, CourseInput } from '../_context/UserInputContext'
+import React, { ReactNode } from 'react';
+import UserInputProvider from './_components/UserInputProvider';
 
-const layout = ({ children }: { children: ReactNode }) => {
-    const [userCourseInput, setUserCourseInput] = useState<CourseInput>({});
+const Layout = ({ children }: { children: ReactNode }) => {
     return (
-        <div>
-            <UserInputContext.Provider value={{ userCourseInput, setUserCourseInput }}>
-                {children}
-            </UserInputContext.Provider>
-        </div>
-    )
+        <UserInputProvider>
+            {children}
+        </UserInputProvider>
+    );
 }
 
-export default layout
+export default Layout;

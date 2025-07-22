@@ -8,9 +8,9 @@ export const getUserCourse = async ({
     username: string
 }) => {
     try {
-        const result = await db.select().from(CourseList).where(eq(CourseList.username,username));
+        const result = await db.select().from(CourseList).where(eq(CourseList.username, username));
         return result;
-    } catch (error) {
+    } catch {
         console.log("error in fetching UserCourses");
     }
 }

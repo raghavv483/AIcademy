@@ -10,12 +10,9 @@ import SelectOption from './_components/SelectOption';
 import { UserInputContext } from '../_context/UserInputContext';
 import { getGroqChatCompletion } from '../_configs/AiModels';
 import LoadingDialog from './_components/LoadingDialog';
-import { db } from '../_configs/db';
-import { CourseList } from '../_configs/Schema';
-import { useUser } from '@clerk/nextjs';
-import { v4 as uuidv4 } from 'uuid';
 import { SaveCourseLayoutInDb } from "./action";
 import { useRouter } from 'next/navigation';
+import { useUser } from '@clerk/nextjs';
 
 const StepperOptions = [
   {
@@ -41,7 +38,7 @@ const CreateCourse = () => {
   const context = useContext(UserInputContext);
   const [loading, setLoading] = useState(false);
   if (!context) throw new Error('UserInputContext.Provider is missing');
-  const { userCourseInput, setUserCourseInput } = context;
+  const { userCourseInput } = context;
   const router = useRouter()
 
   const GenerateCourseLayout = async () => {

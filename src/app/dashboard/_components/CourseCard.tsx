@@ -3,7 +3,17 @@ import Image from 'next/image'
 import Link from 'next/link';
 import React from 'react'
 
-const CourseCard = ({ course }: any) => {
+interface Course {
+  courseId: string;
+  courseBanner: string;
+  name: string;
+  courseOutput: {
+    Duration?: string;
+    // add other properties as needed
+  };
+}
+
+const CourseCard = ({ course }: { course: Course }) => {
 
   return (
     <Link href={'/course/' + course?.courseId}>

@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, ReactNode } from "react";
-import { UserInputContext, CourseInput } from "../../_context/UserInputContext";
+import React, { useState, ReactNode } from 'react';
+import { UserInputContext, CourseInput } from '../../_context/UserInputContext';
 
 const UserInputProvider = ({ children }: { children: ReactNode }) => {
     const [userCourseInput, setUserCourseInput] = useState<CourseInput>({});
